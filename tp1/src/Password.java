@@ -152,7 +152,10 @@ public class Password {
         List<String> chiffres = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
         List<String> speciaux = List.of("#", "!", "?", "(", ")", "{", "}", "[", "]", "_", "&", "@");
 
-        for(int i = 0; i<= nb_min; )
+        String mot_de_passe = new String();
+        for(int i = 0; i<= nb_min; i++){
+            int minus = secureRandom.nextInt(lettres.size()); // pas fini
+        }
 
 
         // Code here
