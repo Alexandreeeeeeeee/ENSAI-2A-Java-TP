@@ -1,5 +1,6 @@
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,9 +40,12 @@ public class Password {
      * @return the 6-digit number that matches, or null if no match is found
      */
     public static String bruteForce6Digit(String targetHash) {
-
-        // Code here
-
+        for(int i = 0; i < 1000000; i++){
+            String mdp = String.format("%06d", i);
+            if (hashPassword(mdp).equals(targetHash)){
+                return mdp;
+            }
+        }
         return null;
     }
 
@@ -60,9 +64,31 @@ public class Password {
      * @return true if the password is strong, false otherwise
      */
     public static boolean isStrongPassword(String password) {
-
-        // Code here
-
+        int longueur = password.length();
+        if (longueur < 12){
+            return false;
+        }
+        int nb_min = 0;
+        int nb_maj = 0;
+        int nb_digit = 0;
+        int nb_white = 0;
+        for (int i = 0; i < longueur; i++){
+            if (Character.isUpperCase(password.charAt(i))){
+                nb_maj++;
+            }
+            if (Character.isLowerCase(password.charAt(i))){
+                nb_min++;
+            }
+            if (Character.isDigit(password.charAt(i))){
+                nb_digit++;
+            }
+            if (Character.isWhitespace(password.charAt(i))){
+                nb_white++;
+            }
+        }
+        if (nb_min != 0 && nb_maj != 0 && nb_digit != 0 & nb_white == 0){
+            return true;
+        }
         return false;
     }
 
@@ -75,10 +101,11 @@ public class Password {
      *         true if the password is strong, false otherwise
      */
     public static HashMap<String, Boolean> checkPasswordsList(ArrayList<String> passwords) {
-
-        // Code here
-
-        return null;
+        HashMap<String, Boolean> strengths = new HashMap<>();
+        for(String password : passwords){
+            strengths.put(password, isStrongPassword(password));
+        }
+        return strengths;
     }
 
     /**
@@ -94,6 +121,39 @@ public class Password {
      * @return A randomly generated password that meets the security criteria.
      */
     public static String generatePassword(int nbCar) {
+        SecureRandom secureRandom = new SecureRandom();
+        int restant = nbCar;
+        int nb_min = secureRandom.nextInt(restant + 1);
+        if (nb_min == restant){
+            nb_min = nb_min - 3;
+        }
+        if (nb_min == 0){
+            nb_min = 1;
+        }
+        restant = restant - nb_min;
+        int nb_maj = secureRandom.nextInt(restant + 1);
+        if (nb_maj == restant){
+            nb_maj = nb_maj - 2;
+        }
+        if (nb_maj == 0){
+            nb_maj = 1;
+        }
+        restant = restant - nb_maj;
+        int nb_digit = secureRandom.nextInt(restant + 1);
+        if (nb_digit == restant){
+            nb_digit = nb_digit - 1;
+        }
+        if (nb_digit == 0){
+            nb_digit =1;
+        }
+        int nb_spec = restant - nb_digit;
+        
+        List<String> lettres = List.of("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m","n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+        List<String> chiffres = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+        List<String> speciaux = List.of("#", "!", "?", "(", ")", "{", "}", "[", "]", "_", "&", "@");
+
+        for(int i = 0; i<= nb_min; )
+
 
         // Code here
 
